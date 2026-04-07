@@ -1,0 +1,35 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+venv/
+pip-log.txt
+pip-delete-this-directory.txt
+.tox/
+.coverage
+.cache
+nosetests.xml
+coverage.xml
+*.cover
+.hypothesis/
+
+# PyInstaller
+#  Usually these files are written by a python script, and contain the exe and
+#  other data for a program's release.
+build/
+dist/
+
+# macOS
+.DS_Store
+
+# Logs
+*.log
+
+# Project specific
+dummy_docx_parts/
+test/
+test_convert.py
+docx_hooks.py
