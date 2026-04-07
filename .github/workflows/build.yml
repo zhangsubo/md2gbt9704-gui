@@ -35,7 +35,7 @@ jobs:
         id: get_version
         shell: bash
         run: |
-          VERSION=$(python -c "import re; content = open('main.py').read(); match = re.search(r'setApplicationVersion\(\"([^\"]+)\"\)', content); print(match.group(1) if match else '1.0.0')")
+          VERSION=$(python -c "import re; content = open('main.py', encoding='utf-8').read(); match = re.search(r'setApplicationVersion\(\"([^\"]+)\"\)', content); print(match.group(1) if match else '1.0.0')")
           echo "VERSION=$VERSION" >> $GITHUB_ENV
           echo "version=$VERSION" >> $GITHUB_OUTPUT
 
@@ -45,7 +45,7 @@ jobs:
           VERSION: ${{ env.VERSION }}
         run: |
           Remove-Item -Path dist -Recurse -Force -ErrorAction SilentlyContinue
-          pyinstaller --onedir --noconfirm md2gbt9704.spec
+          pyinstaller --noconfirm md2gbt9704.spec
           Compress-Archive -Path 'dist/md2gbt9704/*' -DestinationPath "dist/md2gbt9704_${env:VERSION}_windows.zip" -Force
 
       - name: Upload Artifact
@@ -76,7 +76,7 @@ jobs:
       - name: Get Version
         id: get_version
         run: |
-          VERSION=$(python -c "import re; content = open('main.py').read(); match = re.search(r'setApplicationVersion\(\"([^\"]+)\"\)', content); print(match.group(1) if match else '1.0.0')")
+          VERSION=$(python -c "import re; content = open('main.py', encoding='utf-8').read(); match = re.search(r'setApplicationVersion\(\"([^\"]+)\"\)', content); print(match.group(1) if match else '1.0.0')")
           echo "VERSION=$VERSION" >> $GITHUB_ENV
           echo "version=$VERSION" >> $GITHUB_OUTPUT
 
@@ -113,7 +113,7 @@ jobs:
           VERSION: ${{ env.VERSION }}
         run: |
           rm -rf dist build
-          pyinstaller --onedir --noconfirm md2gbt9704.spec
+          pyinstaller --noconfirm md2gbt9704.spec
           mkdir -p dist/md2gbt9704.app/Contents/MacOS
           mkdir -p dist/md2gbt9704.app/Contents/Resources
           cp -r dist/md2gbt9704/* dist/md2gbt9704.app/Contents/MacOS/
