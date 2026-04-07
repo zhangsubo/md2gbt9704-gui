@@ -46,7 +46,7 @@ jobs:
         run: |
           Remove-Item -Path dist -Recurse -Force -ErrorAction SilentlyContinue
           pyinstaller --noconfirm md2gbt9704.spec
-          Compress-Archive -Path 'dist/md2gbt9704/*' -DestinationPath "dist/md2gbt9704_${env:VERSION}_windows.zip" -Force
+          Compress-Archive -Path 'dist/md2gbt9704.exe' -DestinationPath "dist/md2gbt9704_${env:VERSION}_windows.zip" -Force
 
       - name: Upload Artifact
         uses: actions/upload-artifact@v4
