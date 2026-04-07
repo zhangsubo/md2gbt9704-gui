@@ -116,7 +116,8 @@ jobs:
           pyinstaller --noconfirm md2gbt9704.spec
           mkdir -p dist/md2gbt9704.app/Contents/MacOS
           mkdir -p dist/md2gbt9704.app/Contents/Resources
-          cp -r dist/md2gbt9704/* dist/md2gbt9704.app/Contents/MacOS/
+          cp dist/md2gbt9704 dist/md2gbt9704.app/Contents/MacOS/md2gbt9704
+          chmod +x dist/md2gbt9704.app/Contents/MacOS/md2gbt9704
           cp md2gbt9704.app/Contents/Info.plist dist/md2gbt9704.app/Contents/Info.plist
           cd dist
           zip -r "md2gbt9704_${VERSION}_macos.zip" md2gbt9704.app
