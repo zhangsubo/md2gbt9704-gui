@@ -76,37 +76,3 @@ exe = EXE(
     codesign_identity=None,
     entitlements_file=None,
 )
-
-coll = COLLECT(
-    exe,
-    a.binaries,
-    a.zipfiles,
-    a.datas,
-    strip=False,
-    upx=True,
-    upx_exclude=[],
-    name='md2gbt9704',
-)
-
-app = BUNDLE(
-    coll,
-    name='md2gbt9704.app',
-    info_plist={
-        'CFBundleName': 'md2gbt9704',
-        'CFBundleDisplayName': 'md2gbt9704',
-        'CFBundleIdentifier': 'com.md2gbt9704',
-        'CFBundleVersion': '1.0.0',
-        'CFBundleShortVersionString': '1.0.0',
-        'CFBundlePackageType': 'APPL',
-        'LSMinimumSystemVersion': '10.13',
-        'NSHighResolutionCapable': True,
-    },
-    plugin_dir=None,
-    plugins=[],
-    icon=None,
-    bundle_identifier=None,
-    bundle_name=None,
-    info_plist_filename=None,
-    plugins_dir=None,
-    version=None,
-)
