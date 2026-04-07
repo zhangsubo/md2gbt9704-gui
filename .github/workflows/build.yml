@@ -80,6 +80,34 @@ jobs:
           echo "VERSION=$VERSION" >> $GITHUB_ENV
           echo "version=$VERSION" >> $GITHUB_OUTPUT
 
+      - name: Create Info.plist
+        run: |
+          mkdir -p md2gbt9704.app/Contents
+          cat > md2gbt9704.app/Contents/Info.plist << 'INFOPLIST'
+          <?xml version="1.0" encoding="UTF-8"?>
+          <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+          <plist version="1.0">
+          <dict>
+              <key>CFBundleExecutable</key>
+              <string>md2gbt9704</string>
+              <key>CFBundleIdentifier</key>
+              <string>com.md2gbt9704</string>
+              <key>CFBundleName</key>
+              <string>md2gbt9704</string>
+              <key>CFBundlePackageType</key>
+              <string>APPL</string>
+              <key>CFBundleShortVersionString</key>
+              <string>1.0.0</string>
+              <key>CFBundleVersion</key>
+              <string>1.0.0</string>
+              <key>LSMinimumSystemVersion</key>
+              <string>10.13</string>
+              <key>NSHighResolutionCapable</key>
+              <true/>
+          </dict>
+          </plist>
+          INFOPLIST
+
       - name: Build with PyInstaller
         env:
           VERSION: ${{ env.VERSION }}
@@ -89,28 +117,7 @@ jobs:
           mkdir -p dist/md2gbt9704.app/Contents/MacOS
           mkdir -p dist/md2gbt9704.app/Contents/Resources
           cp -r dist/md2gbt9704/* dist/md2gbt9704.app/Contents/MacOS/
-          echo '<?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
-<plist version="1.0">
-<dict>
-    <key>CFBundleExecutable</key>
-    <string>md2gbt9704</string>
-    <key>CFBundleIdentifier</key>
-    <string>com.md2gbt9704</string>
-    <key>CFBundleName</key>
-    <string>md2gbt9704</string>
-    <key>CFBundlePackageType</key>
-    <string>APPL</string>
-    <key>CFBundleShortVersionString</key>
-    <string>1.0.0</string>
-    <key>CFBundleVersion</key>
-    <string>1.0.0</string>
-    <key>LSMinimumSystemVersion</key>
-    <string>10.13</string>
-    <key>NSHighResolutionCapable</key>
-    <true/>
-</dict>
-</plist>' > dist/md2gbt9704.app/Contents/Info.plist
+          cp md2gbt9704.app/Contents/Info.plist dist/md2gbt9704.app/Contents/Info.plist
           cd dist
           zip -r "md2gbt9704_${VERSION}_macos.zip" md2gbt9704.app
 
