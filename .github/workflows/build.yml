@@ -20,10 +20,8 @@ jobs:
         include:
           - os: windows-latest
             platform: windows
-            artifact_pattern: "dist/md2gbt9704*"
           - os: macos-latest
             platform: macos
-            artifact_pattern: "dist/md2gbt9704*"
 
     steps:
       - name: Checkout code
@@ -52,18 +50,50 @@ jobs:
       - name: Build with PyInstaller (Windows)
         if: matrix.platform == 'windows'
         shell: pwsh
+        env:
+          VERSION: ${{ env.VERSION }}
         run: |
           Remove-Item -Path dist -Recurse -Force -ErrorAction SilentlyContinue
           pyinstaller --onedir --noconfirm md2gbt9704.spec
-          Compress-Archive -Path 'dist/md2gbt9704/*' -DestinationPath "dist/md2gbt9704_${{ env.VERSION }}_windows.zip" -Force
+          Compress-Archive -Path 'dist/md2gbt9704/*' -DestinationPath "dist/md2gbt9704_${env:VERSION}_windows.zip" -Force
 
       - name: Build with PyInstaller (macOS)
         if: matrix.platform == 'macos'
+        env:
+          VERSION: ${{ env.VERSION }}
         run: |
           rm -rf dist
           pyinstaller --onedir --noconfirm md2gbt9704.spec
+          APP_NAME="md2gbt9704"
+          mkdir -p "dist/${APP_NAME}.app/Contents/MacOS"
+          mkdir -p "dist/${APP_NAME}.app/Contents/Resources"
+          cp -r "dist/${APP_NAME}/"* "dist/${APP_NAME}.app/Contents/MacOS/"
+          cat > "dist/${APP_NAME}.app/Contents/Info.plist" << 'EOF'
+          <?xml version="1.0" encoding="UTF-8"?>
+          <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+          <plist version="1.0">
+          <dict>
+              <key>CFBundleExecutable</key>
+              <string>md2gbt9704</string>
+              <key>CFBundleIdentifier</key>
+              <string>com.md2gbt9704</string>
+              <key>CFBundleName</key>
+              <string>md2gbt9704</string>
+              <key>CFBundlePackageType</key>
+              <string>APPL</string>
+              <key>CFBundleShortVersionString</key>
+              <string>1.0.0</string>
+              <key>CFBundleVersion</key>
+              <string>1.0.0</string>
+              <key>LSMinimumSystemVersion</key>
+              <string>10.13</string>
+              <key>NSHighResolutionCapable</key>
+              <true/>
+          </dict>
+          </plist>
+          EOF
           cd dist
-          zip -r "md2gbt9704_${{ env.VERSION }}_macos.zip" md2gbt9704.app
+          zip -r "md2gbt9704_${VERSION}_macos.zip" "${APP_NAME}.app"
           cd ..
 
       - name: Upload Artifact
